@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>CEAA</title>
+    <base href="/" />
+    <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/app.css" rel="stylesheet" />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link href="PaginaWebCEAA.Client.styles.css" rel="stylesheet" />
+    <link href="manifest.json" rel="manifest" />
+    <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png" />
+    <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png" />
+
+
+</head>
+
+<body>
+    <div id="app">
+        <svg class="loading-progress">
+            <circle r="40%" cx="50%" cy="50%" />
+            <circle r="40%" cx="50%" cy="50%" />
+        </svg>
+        <div class="loading-progress-text"></div>
+    </div>
+
+    <div id="blazor-error-ui">
+        An unhandled error has occurred.
+        <a href="" class="reload">Reload</a>
+        <a class="dismiss">🗙</a>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            window.onload = function () {
+                window.exportOficios = async (TipoOficio, Fecha, Folio, Nombre, RFC, Estudios, Puesto, Nivel, Sueldo, Compe, Nombra, Sustitu, Motivo) => {
+
+                    var tiOficio, titxt;
+                    switch (TipoOficio) {
+                        case 1:
+                            tiOficio = "Alta";
+                            break;
+                        case 2:
+                            tiOficio = "Modificatorio";
+                            break;
+                        case 3:
+                            tiOficio = "Baja";
+                            break;
+                        case 4:
+                            tiOficio = "Ascenso";
+                            break;
+                        case 5:
+                            tiOficio = "Descenso";
+                            break;
+                        case 6:
+                            tiOficio = "Movimiento Alta";
+                            titxt = "alta";
+                            break;
+                        case 7:
+                            tiOficio = "Movimiento Modificacion";
+                            titxt = "modificación";
+                            break;
+                        case 8:
+                            tiOficio = "Alta ISSSTE";
+                            titxt = "alta";
+                            break;
+                        case 9:
+                            tiOficio = "Modificación ISSSTE";
+                            titxt = "modificación";
+                            break;
+                        case 10:
+                            tiOficio = "Baja ISSSTE";
+                            titxt = "baja";
+                            break;
+                        default:
+                            tiOficio = "Desconocido";
+                            break;
+                    }
+
+                    const { jsPDF } = window.jspdf;
+                    var doc = new jsPDF({
+                        orientation: "portrait",
+                        unit: "mm",
+                        format: [216, 279]
+                    });
+
+                    var margenIzquierdo = 20;
+                    var margenDerecho = 20;
+                    var margenSuperior = 15;
+                    var margenInferior = 19;
+                    var contenidoWidth = doc.internal.pageSize.width - margenIzquierdo - margenDerecho;
+                    var contenidoHeight = doc.internal.pageSize.height - margenSuperior - margenInferior;
+
+                    doc.addFont('./Montserrat-Bold.ttf', 'Montserrat', 'bold');
+                    doc.addFont('./Montserrat-Regular.ttf', 'Montserrat', 'regular');
+
+                    doc.setFont("Montserrat", "bold");
+                    doc.setTextColor("#943634");
+                    doc.setFontSize(10);
+                    doc.text("Dirección de Administración y Finanzas", margenIzquierdo, margenSuperior + 20.8);
+
+
+                    if ([1, 2, 3, 4, 5].includes(TipoOficio)) {
+                        // OFICIOS ALTA, MODIFICATORIO, BAJA, ASCENSO Y DESCENSO //
+
+                        var tiNombre, tiPuesto, atNombre, atPuesto;
+
+                        if (TipoOficio >= 1 && TipoOficio <= 3) {
+                            tiNombre = "L.A.E. Andres Caudillo Rivero";
+                            tiPuesto = "Subdirector de Administración";
+                            atNombre = "L.A.E. Luis Javier Orgaz Zamora";
+                            atPuesto = "Director de Administración y Finanzas";
+                        } else if (TipoOficio >= 4 && TipoOficio <= 5) {
+                            tiNombre = "L.A.E. Andres Caudillo Rivero";
+                            tiPuesto = "Subdirector de Administración";
+                            atNombre = "L.A.E. Luis Javier Orgaz Zamora";
+                            atPuesto = "Director de Administración y Finanzas";
+                        }
+
+                        doc.setFont("Montserrat", "regular");
+                        doc.setTextColor("#000000");
+                        doc.setFontSize(11);
+                        var fechaTexto = "Pachuca de Soto, Hgo., " + Fecha + ".";
+                        var fechaAncho = doc.getStringUnitWidth(fechaTexto) * doc.internal.getFontSize() / doc.internal.scaleFactor;
+                        var fechaX = doc.internal.pageSize.width - margenDerecho - fechaAncho;
+                        doc.text(fechaTexto, fechaX, margenSuperior + 38.8);
+
+                        var folioTexto = "Oficio No. " + Folio;
+                        var folioAncho = doc.getStringUnitWidth(folioTexto) * doc.internal.getFontSize() / doc.internal.scaleFactor;
+                        var folioX = doc.internal.pageSize.width - margenDerecho - folioAncho;
+                        doc.text(folioTexto, folioX, margenSuperior + 43.7);
+
+                        doc.setFont("Montserrat", "bold");
+                        doc.setTextColor("#000000");
+                        doc.setFontSize(11);
+                        doc.text(tiNombre, margenIzquierdo, margenSuperior + 57.7);
+                        doc.text(tiPuesto, margenIzquierdo, margenSuperior + 62.5);
+                        doc.text("Presente", margenIzquierdo, margenSuperior + 67.2);
+
+                        doc.setFont("Montserrat", "regular");
+                        doc.setTextColor("#000000");
+                        doc.setFontSize(11);
+                        var textoLargo = "Por este conducto me permito solicitar a usted, se realice el siguiente movimiento de personal:";
+                        var splitText = doc.splitTextToSize(textoLargo, contenidoWidth);
+                        var lineHeight = 4.8;
+                        splitText.forEach((line, index) => {
+                            doc.text(margenIzquierdo, margenSuperior + 76.62 + (lineHeight * index), line);
+                        });
+
+                        let yPos = margenSuperior + 100;
+
+                        function addText(label, value, marginLeft, marginTop) {
+                            if (value) {
+                                doc.text(label, marginLeft, marginTop);
+                                doc.text(value, marginLeft + 55, marginTop);
+                                return 5;
+                            }
+                            return 0;
+                        }
+
+                        doc.text(tiOficio, margenIzquierdo + 83.5, margenSuperior + 90.8);
+                        yPos += addText("Nombre:", Nombre, margenIzquierdo, yPos);
+                        yPos += addText("R.F.C.:", RFC, margenIzquierdo, yPos);
+                        yPos += addText("Nivel Académico:", Estudios, margenIzquierdo, yPos);
+                        yPos += addText("Puesto:", Puesto, margenIzquierdo, yPos);
+                        yPos += addText("Nivel:", Nivel, margenIzquierdo, yPos);
+                        yPos += addText("Sueldo Mensual:", Sueldo, margenIzquierdo, yPos);
+                        yPos += addText("Compensación Mensual:", Compe, margenIzquierdo, yPos);
+                        yPos += addText("Tipo de Nombramiento:", Nombra, margenIzquierdo, yPos);
+                        yPos += addText("Lugar de Adscripción:", "Comisión Estatal del Agua y Alcantarillado", margenIzquierdo, yPos);
+                        yPos += addText("Fecha de Alta:", Fecha, margenIzquierdo, yPos);
+                        yPos += addText("En Sustitución de:", Sustitu, margenIzquierdo, yPos);
+                        yPos += addText("Motivo:", Motivo, margenIzquierdo, yPos);
+
+                    } else if ([6, 7].includes(TipoOficio)) {
+                        // OFICIOS MOVIMIENTO ALTA Y MOVIMIENTO MODIFICACION //
+
+                        var atNombre = "L.A.E. Luis Javier Orgaz Zamora";
+                        var atPuesto = "Director de Administración y Finanzas";
+
+                        doc.setFont("Montserrat", "regular");
+                        doc.setTextColor("#000000");
+                        doc.setFontSize(11);
+                        var fechaTexto = "Pachuca de Soto, Hgo., " + Fecha + ".";
+                        var fechaAncho = doc.getStringUnitWidth(fechaTexto) * doc.internal.getFontSize() / doc.internal.scaleFactor;
+                        var fechaX = doc.internal.pageSize.width - margenDerecho - fechaAncho;
+                        doc.text(fechaTexto, fechaX, margenSuperior + 38.8);
+
+                        var folioTexto = "Oficio No. " + Folio;
+                        var folioAncho = doc.getStringUnitWidth(folioTexto) * doc.internal.getFontSize() / doc.internal.scaleFactor;
+                        var folioX = doc.internal.pageSize.width - margenDerecho - folioAncho;
+                        doc.text(folioTexto, folioX, margenSuperior + 43.7);
+
+                        doc.setFont("Montserrat", "bold");
+                        doc.setTextColor("#000000");
+                        doc.setFontSize(11);
+                        doc.text("L.A.E. Andres Caudillo Rivero", margenIzquierdo, margenSuperior + 57.7);
+                        doc.text("Subdirector de Administración", margenIzquierdo, margenSuperior + 62.5);
+                        doc.text("Presente", margenIzquierdo, margenSuperior + 67.2);
+
+                        doc.setFont("Montserrat", "regular");
+                        doc.setTextColor("#000000");
+                        doc.setFontSize(11);
+
+                        var parrafo1 = "Por medio del presente hago de conocimiento que a partir del " + Fecha + ", el C. " + Nombre + ", ocupara el cargo de " + Puesto + ", como servidor público de " + Nombra + ".";
+                        var parrafo2 = "Lo anterior con la finalidad de que se realicen los trámites correspondientes para el movimiento de " + titxt + ".";
+                        var parrafo3 = "Sin otro particular por el momento, quedo de usted.";
+
+                        var textoCompleto = parrafo1 + "\n\n\n" + parrafo2 + "\n\n" + parrafo3;
+
+                        var splitText = doc.splitTextToSize(textoCompleto, contenidoWidth);
+                        var lineHeight = 4.8;
+                        splitText.forEach((line, index) => {
+                            doc.text(margenIzquierdo, margenSuperior + 81 + (lineHeight * index), line);
+                        });
+
+                    } else if ([8, 9, 10].includes(TipoOficio)) {
+                        // OFICIOS ALTA ISSSTE, MODIFICACIÓN ISSSTE Y BAJA ISSSTE //
+
+                        var atNombre = "L.A.E. Luis Javier Orgaz Zamora";
+                        var atPuesto = "Director de Administración y Finanzas";
+
+                        doc.setFont("Montserrat", "regular");
+                        doc.setTextColor("#000000");
+                        doc.setFontSize(11);
+                        var folioTexto = "Oficio No. " + Folio;
+                        var folioAncho = doc.getStringUnitWidth(folioTexto) * doc.internal.getFontSize() / doc.internal.scaleFactor;
+                        var folioX = doc.internal.pageSize.width - margenDerecho - folioAncho;
+                        doc.text(folioTexto, folioX, margenSuperior + 43.5);
+
+                        var fechaTexto = "Pachuca de Soto, Hgo., " + Fecha + ".";
+                        var fechaAncho = doc.getStringUnitWidth(fechaTexto) * doc.internal.getFontSize() / doc.internal.scaleFactor;
+                        var fechaX = doc.internal.pageSize.width - margenDerecho - fechaAncho;
+                        doc.text(fechaTexto, fechaX, margenSuperior + 48.2);
+
+                        var fechaTexto = "Asunto: Formato de Aviso de " + titxt + " del ISSSTE.";
+                        var fechaAncho = doc.getStringUnitWidth(fechaTexto) * doc.internal.getFontSize() / doc.internal.scaleFactor;
+                        var fechaX = doc.internal.pageSize.width - margenDerecho - fechaAncho;
+                        doc.text(fechaTexto, fechaX, margenSuperior + 53);
+
+                        doc.setFont("Montserrat", "bold");
+                        doc.setTextColor("#000000");
+                        doc.setFontSize(11);
+                        doc.text("L.C. Irma Iliana Hidalgo Lugo.", margenIzquierdo, margenSuperior + 71.9);
+
+                        doc.setFont("Montserrat", "regular");
+                        doc.setTextColor("#000000");
+                        doc.setFontSize(11);
+                        doc.text("Directora General de Recursos Humanos", margenIzquierdo, margenSuperior + 76.6);
+                        doc.text("de Gobierno del Estado de Hidalgo", margenIzquierdo, margenSuperior + 81.3);
+                        doc.text("Presente", margenIzquierdo, margenSuperior + 86);
+
+                        var textoLargo;
+                        switch (TipoOficio) {
+                            case 8:
+                                textoLargo = "Anexo al presente envió a usted, formato de aviso de " + titxt + " del ISSSTE del C. " + Nombre + ", servidor público de la nómina de estructura de la Comisión Estatal del Agua y Alcantarillado, con fecha " + Fecha + ".";
+                                break;
+                            case 9:
+                                textoLargo = "Anexo al presente envió a usted, formato de aviso de " + titxt + " del ISSSTE del C. " + Nombre + ", ex servidor público de la nómina de estructura de la Comisión Estatal del Agua y Alcantarillado, con fecha " + Fecha + ".";
+                                break;
+                            case 10:
+                                textoLargo = "Anexo al presente envió a usted, formato de aviso de " + titxt + " del ISSSTE del C. " + Nombre + ", a la nómina de estructura de la Comisión Estatal del Agua y Alcantarillado, con fecha " + Fecha + ".";
+                                break;
+                            default:
+                                tiOficio = "Desconocido";
+                                break;
+                        }
+
+                        var splitText = doc.splitTextToSize(textoLargo, contenidoWidth);
+                        var lineHeight = 4.8;
+                        splitText.forEach((line, index) => {
+                            doc.text(margenIzquierdo, margenSuperior + 100.3 + (lineHeight * index), line);
+                        });
+
+                        doc.text("Sin otro particular, aprovecho la ocasión para enviarle un cordial saludo.", margenIzquierdo, margenSuperior + 128.7);
+
+                    }
+
+                    doc.setFont("Montserrat", "bold");
+                    doc.setTextColor("#000000");
+                    doc.setFontSize(11);
+                    doc.text("Atentamente", margenIzquierdo, margenSuperior + 171.6);
+
+                    doc.text(atNombre, margenIzquierdo, margenSuperior + 195.3);
+                    doc.text(atPuesto, margenIzquierdo, margenSuperior + 200);
+
+                    doc.setFont("Montserrat", "regular");
+                    doc.setTextColor("#000000");
+                    doc.setFontSize(6);
+                    doc.text("c.c.p. Expediente", margenIzquierdo, margenSuperior + 212.6);
+                    doc.text("MGCM", margenIzquierdo, margenSuperior + 215.1);
+
+                    doc.setFont("Montserrat", "regular");
+                    doc.setTextColor("#6A6A6A");
+                    doc.setFontSize(7);
+                    doc.text("Camino Real de la Plata No. 336,", margenIzquierdo + 136.5, margenSuperior + 235);
+                    doc.text("Zona Plateada, Pachuca de Soto, Hgo. C. P. 42084", margenIzquierdo + 114.8, margenSuperior + 238);
+                    doc.text("Ofic.: 771 715 8390 y 771 715 8391", margenIzquierdo + 137.5, margenSuperior + 241);
+                    doc.text("ceaa.hidalgo.gob.mx", margenIzquierdo + 150.6, margenSuperior + 244);
+
+                    var img = new Image();
+                    img.src = "LogoEn.png";
+                    img.crossOrigin = "";
+                    img.onload = function () {
+                        doc.addImage(this, 128.6, 15.68, 67.29, 17.38);
+                        doc.save(tiOficio + " - " + Nombre + ".pdf");
+                    };
+                };
+            };
+        });
+    </script>
+
+    <!-- jQuery (primero) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <!-- Bootstrap JavaScript (segundo) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Generar pdf -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.3/jspdf.umd.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.0.272/jspdf.debug.js"></script>-->
+
+    <script src="_content/Microsoft.AspNetCore.Components.WebAssembly.Authentication/AuthenticationService.js"></script>
+    <script src="_framework/blazor.webassembly.js"></script>
+    <script>navigator.serviceWorker.register('service-worker.js');</script>
+    <script src="js/Utilities.js"></script>
+
+</body>
+
+</html>

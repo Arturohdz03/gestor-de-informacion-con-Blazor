@@ -1,0 +1,318 @@
+﻿@page "/Salarios"
+@using Microsoft.AspNetCore.Authorization
+@using Newtonsoft.Json
+@using PaginaWebCEAA.Shared.DTO
+@using PaginaWebCEAA.Shared.Services
+@using ClosedXML.Excel
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+@inject IJSRuntime _JsServicio
+@inherits LayoutComponentBase
+@attribute [Authorize]
+
+<h1>Salarios</h1>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+        <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" @bind="IdEmpSal" placeholder="Numero de empleado" aria-label="Search">
+        </form>
+        <button class="btn btn-outline-success my-2 my-sm-0" @onclick="Filtrar" type="submit">Buscar</button>
+
+    </div>
+    <div>
+        <button type="button" @onclick="(async () => await Redirect())" class="btn btn-danger">+</button>
+        <button type="button" @onclick="ExportarExcel" class="btn btn-dark">Exportar</button>
+    </div>
+</nav>
+<br />
+<br />
+<style>
+    .no-rounded-corners {
+        border-radius: 10px;
+        overflow: hidden; /* Esto asegura que los bordes redondeados se apliquen correctamente */
+    }
+
+    .table-header th {
+        background-color: #BC955B;
+        color: white; /* Color de texto blanco */
+    }
+
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: rgba(188, 149, 91, 0.1); /* Color de fondo alternado */
+    }
+
+    .table-striped tbody tr:hover {
+        background-color: rgba(188, 149, 91, 0.3); /* Color de fondo al pasar el ratón */
+    }
+
+    /* Estilo personalizado para los botones */
+    .btn {
+        border-radius: 10px; /* Bordes redondeados */
+        padding: 8px 16px; /* Espaciado interno */
+        font-size: 16px; /* Tamaño de fuente */
+        transition: background-color 0.3s ease; /* Transición suave */
+    }
+
+    .btn-danger {
+        background-color: #FF5851; /* Color de fondo para el botón de eliminar */
+        color: white; /* Texto blanco */
+        border: none; /* Sin borde */
+    }
+
+    .btn-dark {
+        background-color: #4B4B4B; /* Color de fondo para el botón de exportar */
+        color: white; /* Texto blanco */
+        border: none; /* Sin borde */
+    }
+
+    .btn-primary {
+        background-color: #007BFF; /* Color de fondo para el botón de editar */
+        color: white; /* Texto blanco */
+        border: none; /* Sin borde */
+    }
+
+        /* Estilo para los botones de eliminar y editar */
+        .btn-primary:hover,
+        .btn-danger:hover,
+        .btn-dark:hover {
+            filter: brightness(90%); /* Reducción del brillo al pasar el ratón */
+        }
+</style>
+
+<table class="table table-striped no-rounded-corners">
+    <thead class="table-header">
+        <tr>
+            <th>Fecha</th>
+            <th>Nombre</th>
+            <th>Sueldo Mensual</th>
+            <th>Compensacion Mensual</th>
+            <th>Honorarios Mensual</th>
+            <th>Sueldo bruto</th>
+            <th>Sueldo Neto</th>
+            <th>Fuente Financiamiento</th>
+            <th>Nombre Fondo</th>
+            <th>Opciones</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var sal in listSalarios)
+        {
+            <tr>
+                <td>@sal.sal_fecha</td>
+                <td>@sal.emp_nombre</td>
+                <td>@sal.sal_mensual_base</td>
+                <td>@sal.sal_compensacion</td>
+                <td>@sal.sal_honorarios</td>
+                <td>@sal.sal_bruto</td>
+                <td>@sal.sal_neto</td>
+                <td>@sal.sal_fuente</td>
+                <td>@sal.sal_nombre_fondo</td>
+
+                <td><button type="button" @onclick="(async () => await DeleteSalary(sal.id_sal))" class="btn btn-danger">Eliminar</button></td>
+                <td><button type="button" @onclick="(async () => await NavigateToUpdateSalary(sal.id_sal))" class="btn btn-primary">Editar</button></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+
+
+@*
+<h1>Salarios</h1>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+        <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" @bind="IdEmpSal" placeholder="Numero de empleado" aria-label="Search">
+        </form>
+        <button class="btn btn-outline-success my-2 my-sm-0" @onclick="Filtrar" type="submit">Buscar</button>
+    </div>
+    <div>
+        <button type="button" @onclick="(async () => await Redirect())" class="btn btn-outline-danger">+</button>
+        <button type="button" @onclick="ExportarExcel" class="btn btn-outline-dark">Exportar</button>
+    </div>
+</nav>
+<br />
+<br />
+<style>
+    .no-rounded-corners {
+        border-radius: 10px;
+        overflow: hidden; /* Esto asegura que los bordes redondeados se apliquen correctamente */
+    }
+    .table-header th {
+        background-color: #BC955B;
+    }
+</style>
+<table class="table table-striped">
+    <thead class="table-header">
+        <tr>
+            <th>Fecha</th>
+            <th>Nombre</th>
+            <th>Sueldo Mensual</th>
+            <th>Compensacion Mensual</th>
+            <th>Honorarios Mensual</th>
+            <th>Sueldo bruto</th>
+            <th>Sueldo Neto</th>
+            <th>Fuente Financiamiento</th>
+            <th>Nombre Fondo</th>
+            <th>Opciones</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var sal in listSalarios)
+        {
+            <tr>
+                <td>@sal.sal_fecha</td>
+                <td>@sal.emp_nombre</td>
+                <td>@sal.sal_mensual_base</td>
+                <td>@sal.sal_compensacion</td>
+                <td>@sal.sal_honorarios</td>
+                <td>@sal.sal_bruto</td>
+                <td>@sal.sal_neto</td>
+                <td>@sal.sal_fuente</td>
+                <td>@sal.sal_nombre_fondo</td>              
+                <td><button type="button" @onclick="(async () => await DeleteSalary(sal.id_sal))" class="btn btn-danger">Delete</button></td>
+                <td><button type="button" @onclick="(async () => await NavigateToUpdateSalary(sal.id_sal))" class="btn btn-primary">Edit</button></td>
+            </tr>
+        }
+    </tbody>
+</table>
+*@
+
+@code {
+    public string IdEmpSal { get; set; }
+    protected List<SalarioEmpDTO> listSalarios = new();
+    private string mensajeError;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetSalarioList();
+    }
+
+
+    protected async Task GetSalarioList()
+    {
+        string apiUrl = "https://localhost:44317/api/salario/get-salario-lista";
+        var response = await Http.GetAsync(apiUrl);
+        response.EnsureSuccessStatusCode();
+        string responseBodyJson = await response.Content.ReadAsStringAsync();
+
+        listSalarios = JsonConvert.DeserializeObject<List<SalarioEmpDTO>>(responseBodyJson);
+    }
+
+    protected async Task Filtrar()
+    {
+        if (!string.IsNullOrEmpty(IdEmpSal) && int.TryParse(IdEmpSal, out int id_emp))
+        {
+            try
+            {
+                mensajeError = null;
+                var response = await Http.GetAsync($"https://localhost:44317/api/salario/get-salario/{id_emp}");
+                if (response.IsSuccessStatusCode)
+                {
+                    var salario = await response.Content.ReadFromJsonAsync<SalarioEmpDTO>();
+                    listSalarios = new List<SalarioEmpDTO> { salario };
+                }
+                else if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                {
+                    listSalarios.Clear();
+                    mensajeError = "No se encontró el empleado con el ID proporcionado.";
+                }
+                else
+                {
+                    listSalarios.Clear();
+                    mensajeError = "Ocurrió un error al buscar el empleado.";
+                }
+            }
+            catch (Exception ex)
+            {
+                // Maneja el error según sea necesario
+                listSalarios.Clear();
+                mensajeError = $"Ocurrió un error interno del servidor: {ex.Message}";
+            }
+        }
+        else
+        {
+            listSalarios.Clear();
+            mensajeError = "Por favor, ingrese un ID de empleado válido.";
+        }
+    }
+
+    protected async Task DeleteSalary(int id_sal)
+    {
+        string apiUrl = "https://localhost:44317/api/salario/delete-salario/" + id_sal;
+
+
+        await Http.DeleteAsync(apiUrl);
+
+        NavigationManager.NavigateTo("/");
+    }
+
+    protected async Task NavigateToUpdateSalary(int id_sal)
+    {
+        string pageURl = "/crear-salario/" + id_sal;
+
+        NavigationManager.NavigateTo(pageURl);
+    }
+    
+    protected async Task Redirect()
+    {
+        string pageURl = "/crear-salario";
+
+        NavigationManager.NavigateTo(pageURl);
+    }
+
+    protected async Task ExportarExcel()
+    {
+        using (var libro = new XLWorkbook())
+        {
+            IXLWorksheet hoja = libro.Worksheets.Add("Salarios");
+
+            hoja.Cell(1, 1).Value = "FECHA";
+            hoja.Cell(1, 2).Value = "NOMBRE EMPLEADO";
+            hoja.Cell(1, 3).Value = "SUELDO MENSUAL";
+            hoja.Cell(1, 4).Value = "COMPENSACION MENSUAL";
+            hoja.Cell(1, 5).Value = "HONORARIOS MENSUAL";
+            hoja.Cell(1, 6).Value = "SUELDO BRUTO";
+            hoja.Cell(1, 7).Value = "SUELDO NETO";
+            hoja.Cell(1, 8).Value = "FUENTE FINANCIAMIENTO";
+            hoja.Cell(1, 9).Value = "NOMBRE FONDO";
+         
+            for (int fila = 1; fila <= listSalarios.Count; fila++)
+            {
+                hoja.Cell(fila + 1, 1).Value = listSalarios[fila - 1].sal_fecha;
+                hoja.Cell(fila + 1, 2).Value = listSalarios[fila - 1].emp_nombre;
+                hoja.Cell(fila + 1, 3).Value = listSalarios[fila - 1].sal_mensual_base;
+                hoja.Cell(fila + 1, 4).Value = listSalarios[fila - 1].sal_compensacion;
+                hoja.Cell(fila + 1, 5).Value = listSalarios[fila - 1].sal_honorarios;
+                hoja.Cell(fila + 1, 6).Value = listSalarios[fila - 1].sal_bruto;
+                hoja.Cell(fila + 1, 7).Value = listSalarios[fila - 1].sal_neto;
+                hoja.Cell(fila + 1, 8).Value = listSalarios[fila - 1].sal_fuente;
+                hoja.Cell(fila + 1, 9).Value = listSalarios[fila - 1].sal_nombre_fondo;
+            }
+            using (var memoria = new MemoryStream())
+            {
+                libro.SaveAs(memoria);
+                var nombreExcel = string.Concat("ReporteSalario ", DateTime.Now.ToString(), ".xlsx");
+
+                await _JsServicio.InvokeAsync<object>(
+                    "DescargarExcel",
+                    nombreExcel,
+                    Convert.ToBase64String(memoria.ToArray())
+                );
+            }
+        }
+    }
+}

@@ -1,0 +1,209 @@
+﻿@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components
+@using Newtonsoft.Json
+@using PaginaWebCEAA.Shared.DTO
+@using PaginaWebCEAA.Shared.Services
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+
+@inherits LayoutComponentBase
+
+@page "/update-empleado/{id_emp:int}"
+<h3>Actualizar empleado</h3>
+
+
+    <div class="container mt-5">
+    <EditForm Model="employed" OnValidSubmit="@ActualizarEmpleado">
+       <div class="form-field">
+
+        <DataAnnotationsValidator />
+
+        <div class="row">
+            <div class="col-3">
+                <label for="inputEmployeeID" class="form-label">Empleado ID</label>
+                <InputNumber @bind-Value=employed.id_emp class="form-control" />
+            <ValidationMessage For="@(() => employed.id_emp)" />
+            </div>
+
+            <div class="col-3">
+                <label for="inputFirstName" class="form-label">Nombres</label>
+                <InputText @bind-Value=employed.emp_nombre class="form-control" />
+            <ValidationMessage For="@(() => employed.emp_nombre)" />
+                    </div>
+
+            <div class="col-3">
+                <label for="inputLastName1" class="form-label">Apellido Paterno</label>
+                <InputText @bind-Value=employed.emp_paterno class="form-control" />
+            <ValidationMessage For="@(() => employed.emp_paterno)" />
+                        </div>
+
+            <div class="col-3">
+                <label for="inputLastName2" class="form-label">Apellido Materno</label>
+                <InputText @bind-Value=employed.emp_materno class="form-control" />
+            <ValidationMessage For="@(() => employed.emp_materno)" />
+            </div>
+         </div>
+
+            
+         <div class="row">
+            <div class="col-3">
+                <label for="inputBirthDate" class="form-label">Fecha Nacimiento</label>
+                <InputDate @bind-Value=employed.emp_fecha_nacimiento class="form-control" />
+                <ValidationMessage For="@(() => employed.emp_fecha_nacimiento)" />
+            </div>
+            <div class="col-3">
+                <label for="inputGender" class="form-label">Sexo</label>
+                <InputText @bind-Value=employed.emp_sexo class="form-control" />
+                <ValidationMessage For="@(() => employed.emp_sexo)" />
+            </div>
+            <div class="col-3">
+                <label for="inputPhone" class="form-label">Celular</label>
+                <InputText @bind-Value=employed.emp_celular class="form-control" />
+                <ValidationMessage For="@(() => employed.emp_celular)" />
+            </div>
+            <div class="col-3">
+                <label for="inputEmail" class="form-label">Correo</label>
+                <InputText @bind-Value=employed.emp_correo class="form-control" />
+                <ValidationMessage For="@(() => employed.emp_correo)" />
+            </div>
+        </div>
+
+            <div class="row">
+            <div class="col-4">
+                <label for="inputCURP" class="form-label">CURP*</label>
+                <InputText @bind-Value=employed.emp_curp class="form-control" />
+                <ValidationMessage For="@(() => employed.emp_curp)" />
+            </div>
+            <div class="col-4">
+                <label for="inputRFC" class="form-label">RFC*</label>
+                <InputText @bind-Value=employed.emp_rfc class="form-control" />
+                <ValidationMessage For="@(() => employed.emp_rfc)" />
+            </div>
+            <div class="col-4">
+                <label for="inputEducation" class="form-label">Estudios*</label>
+                <InputNumber @bind-Value=employed.est_id class="form-control" />
+                    <ValidationMessage For="@(() => employed.est_id)" />
+            </div>
+            </div>
+
+            <h3>Dirección</h3>
+            <div class="row">
+            <div class="col-2">
+                <label for="inputStreet" class="form-label">Calle*</label>
+                <InputText @bind-Value=employed.emp_direc_calle class="form-control" />
+                <ValidationMessage For="@(() => employed.emp_direc_calle)" />
+            </div>
+            <div class="col-2">
+                <label for="inputNumber" class="form-label">Numero*</label>
+                <InputText @bind-Value=employed.emp_direc_num class="form-control" />
+                <ValidationMessage For="@(() => employed.emp_direc_num)" />
+            </div>
+            <div class="col-2">
+                <label for="inputColony" class="form-label">Colonia*</label>
+                <InputText @bind-Value=employed.emp_direc_col class="form-control" />
+                <ValidationMessage For="@(() => employed.emp_direc_col)" />
+            </div>
+                <div class="col-2">
+                <label for="inputMunicipality" class="form-label">Municipio*</label>
+                <InputText @bind-Value=employed.emp_direc_mun class="form-control" />
+                <ValidationMessage For="@(() => employed.emp_direc_mun)" />
+            </div>
+                <div class="col-2">
+                <label for="inputState" class="form-label">Estado*</label>
+                <InputText @bind-Value=employed.emp_direc_estado class="form-control" />
+                <ValidationMessage For="@(() => employed.emp_direc_estado)" />
+            </div>
+                <div class="col-2">
+                <label for="inputPostalCode" class="form-label">CP*</label>
+                <InputText @bind-Value=employed.emp_direc_cp class="form-control" />
+                <ValidationMessage For="@(() => employed.emp_direc_cp)" />
+            </div>
+            </div>
+
+            <h3>Contrato</h3>
+            <div class="row">
+            <div class="col-3">
+                <label for="inputCategory" class="form-label">Categoria*</label>
+                <InputNumber @bind-Value=employed.cat_id class="form-control" />
+                <ValidationMessage For="@(() => employed.cat_id)" />
+            </div>
+                <div class="col-3">
+                <label for="inputPosition" class="form-label">Puesto*</label>
+                <InputNumber @bind-Value=employed.pue_id class="form-control" />
+                <ValidationMessage For="@(() => employed.pue_id)" />
+            </div>
+                <div class="col-3">
+                <label for="inputStartDate" class="form-label">Fecha alta*</label>
+                <InputDate @bind-Value=employed.con_fecha_alta class="form-control" />
+            </div>
+                <div class="col-3">
+                <label for="inputEndDateclass=" form-label"">Fecha baja*</label>
+                <InputDate @bind-Value=employed.con_fecha_baja class="form-control" />
+            </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                <label for="inputArea" class="form-label">Area*</label>
+                <InputNumber @bind-Value=employed.are_id class="form-control" />
+                <ValidationMessage For="@(() => employed.are_id)" />
+            </div>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Save</button>
+                <button class="btn btn-light" @onclick="Cancel">Cancel</button>
+            </div>
+       </div>
+
+    </EditForm>
+    </div>
+
+
+@code {
+
+
+    [Parameter]
+    public int id_emp { get; set;}
+
+    protected EmpConDTO employed = new();
+
+
+    protected override async Task OnParametersSetAsync()
+    {
+        string apiUrl = "https://localhost:44317/api/empleados/get-empleados-lista";
+        var response = await Http.GetAsync(apiUrl);
+        response.EnsureSuccessStatusCode();
+        string responseBodyJson = await response.Content.ReadAsStringAsync();
+
+
+        var employedList = JsonConvert.DeserializeObject<List<EmpConDTO>>(responseBodyJson);
+
+        employed = employedList.Where(x => x.id_emp == id_emp).FirstOrDefault();
+    }
+
+    protected async Task ActualizarEmpleado()
+    {
+        string apiUrl = "https://localhost:44317/api/empleados/update-empleado";
+
+
+        if (employed.id_emp < 1)
+        {
+            return;
+        }
+
+        await Http.PostAsJsonAsync(apiUrl, employed);
+
+        string pageURl = "/Empleados";
+
+        NavigationManager.NavigateTo(pageURl);
+    }
+
+    protected async Task Cancel()
+    {
+        string pageURl = "/Empleados";
+
+        NavigationManager.NavigateTo(pageURl);
+    }
+}

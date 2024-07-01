@@ -1,0 +1,99 @@
+is_global = true
+build_property.EnableAotAnalyzer = 
+build_property.EnableSingleFileAnalyzer = 
+build_property.EnableTrimAnalyzer = false
+build_property.IncludeAllContentForSelfExtract = 
+build_property.TargetFramework = net7.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = false
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = browser
+build_property.RootNamespace = PaginaWebCEAA.Client
+build_property.RootNamespace = PaginaWebCEAA.Client
+build_property.ProjectDir = C:\Users\Arturo\Desktop\CEAAgua\PaginaWebCEAA\Client\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 7.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Users\Arturo\Desktop\CEAAgua\PaginaWebCEAA\Client
+build_property._RazorSourceGeneratorDebug = 
+
+[C:/Users/Arturo/Desktop/CEAAgua/PaginaWebCEAA/Client/App.razor]
+build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Arturo/Desktop/CEAAgua/PaginaWebCEAA/Client/Pages/AddEmployed.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRkRW1wbG95ZWQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Arturo/Desktop/CEAAgua/PaginaWebCEAA/Client/Pages/AddSalary.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRkU2FsYXJ5LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Arturo/Desktop/CEAAgua/PaginaWebCEAA/Client/Pages/Authentication.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXV0aGVudGljYXRpb24ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Arturo/Desktop/CEAAgua/PaginaWebCEAA/Client/Pages/Empleados.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRW1wbGVhZG9zLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Arturo/Desktop/CEAAgua/PaginaWebCEAA/Client/Pages/Index.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXgucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Arturo/Desktop/CEAAgua/PaginaWebCEAA/Client/Pages/Oficios.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcT2ZpY2lvcy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Arturo/Desktop/CEAAgua/PaginaWebCEAA/Client/Pages/Salarios.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2FsYXJpb3MucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Arturo/Desktop/CEAAgua/PaginaWebCEAA/Client/Pages/UpdEmployed.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXBkRW1wbG95ZWQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Arturo/Desktop/CEAAgua/PaginaWebCEAA/Client/Shared/EmpleadosCmp.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXEVtcGxlYWRvc0NtcC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Arturo/Desktop/CEAAgua/PaginaWebCEAA/Client/Shared/LoginDisplay.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXExvZ2luRGlzcGxheS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Arturo/Desktop/CEAAgua/PaginaWebCEAA/Client/Shared/OficiosCmp.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE9maWNpb3NDbXAucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Arturo/Desktop/CEAAgua/PaginaWebCEAA/Client/Shared/RedirectToLogin.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFJlZGlyZWN0VG9Mb2dpbi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Arturo/Desktop/CEAAgua/PaginaWebCEAA/Client/Shared/SalariosCmp.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFNhbGFyaW9zQ21wLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Arturo/Desktop/CEAAgua/PaginaWebCEAA/Client/Shared/SurveyPrompt.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFN1cnZleVByb21wdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Arturo/Desktop/CEAAgua/PaginaWebCEAA/Client/Shared/UsuariosCmp.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFVzdWFyaW9zQ21wLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Arturo/Desktop/CEAAgua/PaginaWebCEAA/Client/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Arturo/Desktop/CEAAgua/PaginaWebCEAA/Client/Shared/MainLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE1haW5MYXlvdXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-xqc8mzmf43
+
+[C:/Users/Arturo/Desktop/CEAAgua/PaginaWebCEAA/Client/Shared/NavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE5hdk1lbnUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-kq23eh5u19

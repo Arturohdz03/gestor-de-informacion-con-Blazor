@@ -1,0 +1,124 @@
+﻿@page "/Oficios"
+@inject IJSRuntime JS
+
+@using Microsoft.AspNetCore.Authorization
+@using PaginaWebCEAA.Shared
+@inject HttpClient Http
+@inherits LayoutComponentBase
+@attribute [Authorize]
+
+<h1>Oficios</h1>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="collapse navbar-collapse">
+        <select id="tipo-oficio" class="form-control" @bind="TipoOficio">
+            <option value="1">Alta</option>
+            <option value="2">Modificatorio</option>
+            <option value="3">Baja</option>
+            <option value="4">Ascenso</option>
+            <option value="5">Descenso</option>
+            <option value="6">Movimiento Alta</option>
+            <option value="7">Movimiento Modificacion</option>
+            <option value="8">Alta ISSSTE</option>
+            <option value="9">Modificación ISSSTE</option>
+            <option value="10">Baja ISSSTE</option>
+        </select>
+    </div>
+    @*
+    <div class="collapse navbar-collapse" id="navbarTogglerOficio">
+    <form class="form-inline my-2 my-lg-0">
+    <input class="form-control mr-sm-2" type="search" placeholder="Buscar empleado" aria-label="Search">
+    </form>
+    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
+    </div>
+    *@
+<button class="btn btn-outline-success" data-toggle="tooltip" title="Exportar" @onclick="exportOficios">Generar</button>
+</nav>
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label for="fecha">Fecha:</label>
+            <input type="text" id="fecha" class="form-control" @bind="Fecha" />
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="folio">Folio:</label>
+            <input type="text" id="folio" class="form-control" @bind="Folio" />
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" class="form-control" @bind="Nombre" />
+        </div>
+
+        @if (TipoOficio == 1 || TipoOficio == 2 || TipoOficio == 3 || TipoOficio == 4 || TipoOficio == 5)
+        {
+            <div class="col-md-6 mb-3">
+                <label for="rfc">R.F.C.:</label>
+                <input type="text" id="rfc" class="form-control" @bind="RFC" />
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="nivelAcademico">Nivel Académico:</label>
+                <input type="text" id="nivelAcademico" class="form-control" @bind="NivelAcademico" />
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="puesto">Puesto:</label>
+                <input type="text" id="puesto" class="form-control" @bind="Puesto" />
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="nivel">Nivel:</label>
+                <input type="text" id="nivel" class="form-control" @bind="Nivel" />
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="sueldoMensual">Sueldo Mensual:</label>
+                <input type="text" id="sueldoMensual" class="form-control" @bind="SueldoMensual" />
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="compensacionMensual">Compensación Mensual:</label>
+                <input type="text" id="compensacionMensual" class="form-control" @bind="CompensacionMensual" />
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="tipoNombramiento">Tipo de Nombramiento:</label>
+                <input type="text" id="tipoNombramiento" class="form-control" @bind="TipoNombramiento" />
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="enSustitucionDe">En Sustitución de:</label>
+                <input type="text" id="enSustitucionDe" class="form-control" @bind="EnSustitucionDe" />
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="motivo">Motivo:</label>
+                <input type="text" id="motivo" class="form-control" @bind="Motivo" />
+            </div>
+        }
+        else if (TipoOficio == 6 || TipoOficio == 7)
+        {
+            <div class="col-md-6 mb-3">
+                <label for="puesto">Puesto:</label>
+                <input type="text" id="puesto" class="form-control" @bind="Puesto" />
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="tipoNombramiento">Tipo de Nombramiento:</label>
+                <input type="text" id="tipoNombramiento" class="form-control" @bind="TipoNombramiento" />
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    string Fecha = "";
+    string Folio = "";
+    string Nombre = "";
+    string RFC = "";
+    string NivelAcademico = "";
+    string Puesto = "";
+    string Nivel = "";
+    string SueldoMensual = "";
+    string CompensacionMensual = "";
+    string TipoNombramiento = "";
+    string EnSustitucionDe = "";
+    string Motivo = "";
+    int TipoOficio = 1;
+
+    private async Task exportOficios()
+    {
+        await JS.InvokeVoidAsync("exportOficios", TipoOficio, Fecha, Folio, Nombre, RFC, NivelAcademico, Puesto, Nivel, SueldoMensual, CompensacionMensual, TipoNombramiento, EnSustitucionDe, Motivo);
+    }
+}

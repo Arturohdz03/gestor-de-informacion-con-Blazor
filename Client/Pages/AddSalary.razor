@@ -1,0 +1,137 @@
+﻿@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components
+@using Newtonsoft.Json
+@using PaginaWebCEAA.Shared.DTO
+@using PaginaWebCEAA.Shared.Services
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+
+@inherits LayoutComponentBase
+
+@page "/crear-salario"
+<h3>Crear salario</h3>
+
+
+<div class="container mt-5">
+
+    <EditForm Model="salary" OnValidSubmit="@CreateSalary">
+       <div class="form-field">
+        <DataAnnotationsValidator />
+
+        <div class="row">
+            <div class="col-6">
+                <label for="inputEmployeeID">Empleado ID</label>
+                    <InputNumber @bind-Value=salary.emp_id class="form-control" />
+                    <ValidationMessage For="@(() => salary.emp_id)" />
+            </div>
+            <div class="col-6">
+                <label for="inputSalaryDate">Fecha de Salario</label>
+                    <InputDate @bind-Value=salary.sal_fecha class="form-control" />
+                    <ValidationMessage For="@(() => salary.sal_fecha)" />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-4">
+                <label for="inputBaseSalary">Sueldo mensual base</label>
+                    <InputNumber @bind-Value=salary.sal_mensual_base class="form-control" />
+                    <ValidationMessage For="@(() => salary.sal_mensual_base)" />
+            </div>
+            <div class="col-4">
+                <label for="inputCompensation">Compensación mensual*</label>
+                    <InputNumber @bind-Value=salary.sal_compensacion class="form-control" />
+                    <ValidationMessage For="@(() => salary.sal_compensacion)" />
+            </div>
+            <div class="col-4">
+                <label for="inputMonthlyHonorarium">Honorarios mensuales</label>
+                    <InputNumber @bind-Value=salary.sal_honorarios class="form-control" />
+                    <ValidationMessage For="@(() => salary.sal_honorarios)" />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-3">
+                <label for="inputPantry">Despensa</label>
+                    <InputNumber @bind-Value=salary.sal_despensa class="form-control" />
+                    <ValidationMessage For="@(() => salary.sal_despensa)" />
+            </div>
+            <div class="col-3">
+                <label for="inputSupplies">Utiles</label>
+                    <InputNumber @bind-Value=salary.sal_utiles class="form-control" />
+                    <ValidationMessage For="@(() => salary.sal_utiles)" />
+            </div>
+        
+            <div class="col-3">
+                <label for="inputTransport">Transporte</label>
+                    <InputNumber @bind-Value=salary.sal_transporte class="form-control" />
+                    <ValidationMessage For="@(() => salary.sal_transporte)" />
+            </div>
+            <div class="col-3">
+                <label for="inputGrossSalary">Sueldo bruto</label>
+                    <InputNumber @bind-Value=salary.sal_bruto class="form-control" />
+                    <ValidationMessage For="@(() => salary.sal_bruto)" />
+            </div>
+        </div>
+            
+            <div class="row">
+            <div class="col-4">
+                <label for="inputNetSalary">Sueldo neto</label>
+                    <InputNumber @bind-Value=salary.sal_neto class="form-control" />
+                    <ValidationMessage For="@(() => salary.sal_neto)" />
+            </div>
+            <div class="col-4">
+                <label for="inputSource">Fuente</label>
+                    <InputText @bind-Value=salary.sal_fuente class="form-control" />
+                    <ValidationMessage For="@(() => salary.sal_fuente)" />
+            </div>
+            <div class="col-4">
+                <label for="inputFundName">Nombre de fondo</label>
+                    <InputText @bind-Value=salary.sal_nombre_fondo class="form-control" />
+                    <ValidationMessage For="@(() => salary.sal_nombre_fondo)" />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <label for="inputObservations">Observaciones</label>
+                    <InputTextArea @bind-Value=salary.sal_observaciones class="form-control" />
+                    <ValidationMessage For="@(() => salary.sal_observaciones)" />
+            </div>
+        </div>
+            <button type="submit" class="btn btn-primary">Save</button>
+            <button class="btn btn-light" @onclick="Cancel">Cancel</button>
+        </div>
+   
+    </EditForm>
+</div>
+
+
+@code {
+    protected Salario salary = new();
+
+    protected async Task CreateSalary()
+    {
+        string apiUrl = "https://localhost:44317/api/salario/post-salario";
+
+
+        if (salary.emp_id == null)
+        {
+            return;
+        }
+
+        await Http.PostAsJsonAsync(apiUrl, salary);
+
+        string pageURl = "/Salarios";
+
+        NavigationManager.NavigateTo(pageURl);
+    }
+
+    protected async Task Cancel()
+    {
+        string pageURl = "/Salarios";
+
+        NavigationManager.NavigateTo(pageURl);
+    }
+}
+

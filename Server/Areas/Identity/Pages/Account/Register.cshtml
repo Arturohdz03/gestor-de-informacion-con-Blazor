@@ -1,0 +1,80 @@
+﻿@page
+@model RegisterModel
+
+<style>
+    html, body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        width: 100%;
+        overflow: hidden; /* Evita el desplazamiento */
+    }
+
+    .form-container {
+        background-image: url("/zyro-image.png"); /* Ruta relativa a wwwroot */
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center; /* Centra la imagen de fondo */
+        height: 100vh; /* Ocupa toda la altura de la ventana */
+        width: 100vw; /* Ocupa toda la anchura de la ventana */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        position: fixed; /* Asegura que el contenedor ocupe toda la pantalla */
+        top: 0;
+        left: 0;
+    }
+
+    .form-content {
+        background-color: rgba(255, 255, 255, 0.2); /* Fondo blanco semi-transparente para el contenido del formulario */
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        max-width: 400px; /* Limita el ancho del formulario */
+        width: 100%; /* Asegura que el formulario ocupe todo el ancho disponible hasta el máximo */
+    }
+
+    .form-control {
+        margin-bottom: 10px;
+    }
+
+    footer {
+        display: none; /* Oculta cualquier pie de página */
+    }
+</style>
+
+<div class="form-container">
+    <div class="form-content">
+        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+            <h2 style="color: #ffffff; text-align: center;">Registrar usuario</h2>
+            <hr />
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                <label asp-for="Input.Email">Correo</label>
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                <label asp-for="Input.Password">Contraseña</label>
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                <label asp-for="Input.ConfirmPassword">Confirmar contraseña</label>
+                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+            </div>
+            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg" style="background-color: #BC955B; color: white;">Registrar</button>
+            <div class="text-center">
+                <p>
+                    <a asp-page="./Login" style="color: white;" asp-route-returnUrl="@Model.ReturnUrl">Ya tengo una cuenta</a>
+                </p>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

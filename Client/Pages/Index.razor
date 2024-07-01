@@ -1,0 +1,43 @@
+﻿@page "/"
+@* Sirve para decirle que vamos a gestionar peticiones del lado del cliente *@
+@inject HttpClient Http
+@inject IJSRuntime JS
+<h3>Misión</h3>
+<p>
+    Somos un Organismo Público Descentralizado Estatal coordinador entre los tres niveles de gobierno de las acciones relacionadas con la explotación, uso, sostenibilidad y aprovechamiento del agua, para que los habitantes de zonas urbanas y rurales cuenten con servicios de agua potable, alcantarillado y saneamiento, así como, agua de calidad con acciones de purificación, monitoreo y desinfección. Mejorando a nivel municipal la cultura del agua y fortaleciendo sus organismos operadores del servicio.
+</p>
+<h3>Visión</h3>
+<p>
+    Ser una institución rectora de la explotación, uso, sostenibilidad y aprovechamiento del agua a través de un marco normativo integral, servidores públicos profesionales, instalaciones, mobiliario y equipo modernos para brindar servicios automatizados, eficientes y oportunos a partir de la georreferenciación sistematizada y en apego a las necesidades de la población de manera regional y municipal.
+</p>
+
+<h3>
+    Objetivo estratégico
+</h3>
+<p>
+    Contribuir a que la población del Estado de Hidalgo cuente con servicios eficaces, eficientes y de calidad de agua potable, alcantarillado y saneamiento a través de una coordinación integral con los diferentes sectores públicos, privados y no gubernamentales, cuidando el uso racional y sostenible del recurso hídrico y su impacto en el cambio climático.
+</p>
+
+<style>
+    .image-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 20px 0; /* Espaciado superior e inferior opcional */
+    }
+
+    .custom-image {
+        width: 100%; /* Puedes ajustar este valor según tus necesidades */
+        max-width: 1000px; /* Opcional: limita el ancho máximo */
+        height: 100%; /* Mantiene la proporción de la imagen */
+    }
+</style>
+
+
+<div class="image-container">
+    <img src="/Untitled.png" class="custom-image" />
+</div>
+@code {
+
+}
+
